@@ -12,7 +12,7 @@ namespace WebAPI_CURD_Operations.Controllers
     public class ContactsController : Controller
     {
         private readonly APIDbContext _context;
-        public ContactsController(APIDbContext dbcontext )
+        public ContactsController(APIDbContext dbcontext)
         {
             this._context = dbcontext;
         }
@@ -20,6 +20,18 @@ namespace WebAPI_CURD_Operations.Controllers
         public async Task<IActionResult> GetContacts()
         {
             return Ok(await _context.Contacts.ToListAsync());
+        }
+
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetContacts([FromRoute] Guid id)
+        {
+            var contact = await _context.Contacts.FindAsync(id);
+            if(contact == null)
+            {
+                return NotFound();
+            }
+            return Ok(contact);
         }
 
         [HttpPost]
@@ -38,7 +50,7 @@ namespace WebAPI_CURD_Operations.Controllers
             return Ok(contacts);
         }
         [HttpPut]
-        [Route("id:guid")]
+        [Route("{id:guid}")]
         public async Task<IActionResult> UpdateContacts([FromRoute] Guid id, UpdateContact update_contact)
         {
             var contact=await _context.Contacts.FindAsync(id);
@@ -49,6 +61,20 @@ namespace WebAPI_CURD_Operations.Controllers
                 contact.Phone = update_contact.Phone;
                 contact.Address = update_contact.Address;
 
+                await _context.SaveChangesAsync();
+                return Ok(contact);
+            }
+            return NotFound();
+        }
+        //Delte Data Form Database 
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteContacts([FromRoute] Guid id)
+        {
+            var contact = await _context.Contacts.FindAsync(id);
+            if (contact != null)
+            {
+                _context.Remove(contact);
                 await _context.SaveChangesAsync();
                 return Ok(contact);
             }

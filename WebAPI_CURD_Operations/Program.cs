@@ -11,8 +11,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Connecting DbContext and Connection String
-builder.Services.AddDbContext<APIDbContext>(options => options.UseInMemoryDatabase("ContactDb"));
+//builder.Services.AddDbContext<APIDbContext>(options => options.UseInMemoryDatabase("ContactDb"));
 
+
+//DBconnectionStringName for Database Connection
+builder.Services.AddDbContext<APIDbContext>
+    (options => options.UseSqlServer
+    (builder.Configuration
+        .GetConnectionString("DBconnectionStringName")
+        ));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

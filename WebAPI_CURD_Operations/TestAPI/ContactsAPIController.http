@@ -1,2 +1,25 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 GET https://localhost:7255/api/Contacts
+
+###
+POST https://localhost:7255/api/Contacts/
+Content-Type: application/json
+{
+  "FullName": "sachin",
+  "Email": "string",
+  "Phone": 0,
+  "Address": "string"
+}
+###
+GET https://localhost:7255/api/Contacts
+
+###this for update data base code
+###
+POST https://localhost:7255/api/Contacts/71abe19b-f9b4-4943-ab7a-2b90ce4b8f2a
+content-Type: application/json
+{
+  "fullName": "Gourav",
+  "email": "string",
+  "phone": 987539240,
+  "address": "s"
+}
